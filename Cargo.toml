@@ -1,0 +1,20 @@
+[package]
+name = "mpu6500rs"
+version = "0.1.0"
+authors = ["zayats1"]
+edition = "2024"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/niiyachiru/embedded-sensors"
+description = "an accelerometer and a gyroscope access crate."
+keywords = ["mpu6500","accelerometer","gyroscope","gyro"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+
+
+[dependencies]
+embedded-hal = "1.0.0"
+nalgebra = "0.34.0"
+nb = "1.1.0"
+
+
