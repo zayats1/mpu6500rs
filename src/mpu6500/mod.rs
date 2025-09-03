@@ -29,7 +29,7 @@ const CALIB_ACCEL_SENSITIVITY: u16 = 16384; // LSB/g
 
 const DEG_TO_RAD: f32 = 0.01745329252;
 
-#[derive(Debug)]
+#[derive(Debug,defmt::Format)]
 pub enum  Mpu6500Err<I2C> where
     I2C: i2c::I2c,{
      I2cErr(<I2C as embedded_hal::i2c::ErrorType>::Error),
