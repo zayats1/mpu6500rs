@@ -639,9 +639,9 @@ where
         reg: Register,
         buf: &mut [u8],
     ) -> core::result::Result<(), <I2C as embedded_hal::i2c::ErrorType>::Error> {
-        // i2c.write(addr, &[reg as u8])?;
-        // i2c.read(addr, buf)?;
-         i2c.write_read(addr, &[reg as u8], buf)?;
+        i2c.write(addr, &[reg as u8])?;
+        i2c.read(addr, buf)?;
+        // i2c.write_read(addr, &[reg as u8], buf)?;
         Ok(())
          
     }
