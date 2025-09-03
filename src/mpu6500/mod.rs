@@ -168,24 +168,24 @@ where
 
         Ok(())
     }
-
+    //the function
     pub fn calibrate<DELAY>(&mut self, i2c: &mut I2C, delay: &mut DELAY) -> Result<(), <I2C as embedded_hal::i2c::ErrorType>::Error>
     where
         DELAY: delay::DelayNs,
     {
         // Self::pwr_mgmt_1(self.addr, i2c, false, false, false, false, false, 0x01)?;
         // Self::pwr_mgmt_2(self.addr, i2c, false, false, false, false, false, false)?;
-        // delay.delay_ms(200);
+        delay.delay_ms(200);
 
-        // Self::enable_interrupt(self.addr, i2c, false, false, false, false)?;
-        // Self::fifo_enable(
-        //     self.addr, i2c, false, false, false, false, false, false, false, false,
-        // )?;
-        // Self::pwr_mgmt_1(self.addr, i2c, false, false, false, false, false, 0x00)?;
-        // Self::i2c_mst_ctrl(self.addr, i2c, false, false, false, false, 0x00)?;
-        // Self::user_ctrl(self.addr, i2c, false, false, false, false, false, false)?;
-        // Self::user_ctrl(self.addr, i2c, false, false, true, true, false, false)?;
-        // delay.delay_ms(15);
+        Self::enable_interrupt(self.addr, i2c, false, false, false, false)?;
+        Self::fifo_enable(
+            self.addr, i2c, false, false, false, false, false, false, false, false,
+        )?;
+        Self::pwr_mgmt_1(self.addr, i2c, false, false, false, false, false, 0x00)?;
+        Self::i2c_mst_ctrl(self.addr, i2c, false, false, false, false, 0x00)?;
+        Self::user_ctrl(self.addr, i2c, false, false, false, false, false, false)?;
+        Self::user_ctrl(self.addr, i2c, false, false, true, true, false, false)?;
+        delay.delay_ms(15);
 
         Self::config(self.addr, i2c, false, config::GyroDlpfCfg::Dlpf184Hz)?;
         Self::sample_rate_div(self.addr, i2c, config::FifoSampleRate::Smpl1000Hz)?;
