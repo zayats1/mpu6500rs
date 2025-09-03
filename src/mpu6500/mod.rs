@@ -168,7 +168,7 @@ where
 
         Ok(())
     }
-    //the function
+    // the function either shuts down the gyro or makes it inacurate
     pub fn calibrate<DELAY>(&mut self, i2c: &mut I2C, delay: &mut DELAY) -> Result<(), <I2C as embedded_hal::i2c::ErrorType>::Error>
     where
         DELAY: delay::DelayNs,
