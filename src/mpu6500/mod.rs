@@ -168,16 +168,16 @@ where
 
         Ok(())
     }
-    // the function either shuts down the gyro or makes it inacurate
+    /// the function either shuts down the gyro or makes it inacurate
     pub fn calibrate<DELAY>(&mut self, i2c: &mut I2C, delay: &mut DELAY) -> Result<(), <I2C as embedded_hal::i2c::ErrorType>::Error>
     where
         DELAY: delay::DelayNs,
     {
-        // Self::pwr_mgmt_1(self.addr, i2c, false, false, false, false, false, 0x01)?;
-        // Self::pwr_mgmt_2(self.addr, i2c, false, false, false, false, false, false)?;
-        // delay.delay_ms(200);
+        Self::pwr_mgmt_1(self.addr, i2c, false, false, false, false, false, 0x01)?;
+        Self::pwr_mgmt_2(self.addr, i2c, false, false, false, false, false, false)?;
+        delay.delay_ms(200);
 
-        // Self::enable_interrupt(self.addr, i2c, false, false, false, false)?;
+        Self::enable_interrupt(self.addr, i2c, false, false, false, false)?;
         Self::fifo_enable(
             self.addr, i2c, false, false, false, false, false, false, false, false,
         )?;
