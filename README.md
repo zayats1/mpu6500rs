@@ -1,14 +1,21 @@
 ## A MPU6500 acces crate
-**WIP**  
-former author:  
-"Dimitri Popov <d.popov28@protonmail.ch>"
+**WIP** 
 
 ## Supported sensors
 
-| Feature       | Sensors           |
-| mpu6500       | MPU6500 |
+| Feature       | Sensors           |  
+| mpu6500       | MPU6500 |  
 
 Please submit an issue or a pull request for a sensor that you want to use, but is not listed in here.
+
+# Roadmap
+1. test common functional with embedded test 
+2. refactor code to system and user parts
+3. add examples
+4. add documentation
+5. add an async support
+6. publish crate to crates.io
+
 
 ## License
 
@@ -24,3 +31,7 @@ at your option.
 Unless you explicitly state otherwise, any contribution intentionally submitted
 for inclusion in the work by you, as defined in the Apache-2.0 license, shall be
 dual licensed as above, without any additional terms or conditions.
+
+ 
+former author:  
+"Dimitri Popov <d.popov28@protonmail.ch>"
