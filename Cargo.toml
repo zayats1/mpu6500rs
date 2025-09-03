@@ -14,7 +14,7 @@ keywords = ["mpu6500","accelerometer","gyroscope","gyro"]
 
 [dependencies]
 embedded-hal = "1.0.0"
-nalgebra = "0.34.0"
+nalgebra = {version = "0.34.0", features = ["libm"]}
 nb = "1.1.0"
 
 
