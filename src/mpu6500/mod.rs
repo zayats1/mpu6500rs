@@ -297,6 +297,11 @@ where
         self.angular_velocity
     }
 
+
+    pub fn temperature(&self) -> f32 {
+        self.temperature
+    }
+
     /// Registers 19 to 24 – Gyro Offset Registers
     fn write_gyro_offset(
         addr: u8,
