@@ -1,6 +1,6 @@
 [package]
 name = "mpu6500rs"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["zayats1"]
 edition = "2024"
 license = "MIT OR Apache-2.0"
@@ -11,11 +11,19 @@ keywords = ["mpu6500","accelerometer","gyroscope","gyro"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 
+# needed for each integration test
+
+
+
 
 [dependencies]
 defmt = "1.0.1"
 embedded-hal = "1.0.0"
+
 nalgebra = {version = "0.34.0",  default-features = false,features = ["libm"]}
 nb = "1.1.0"
 
 
+
+[dev-dependencies]
+defmt-test = "0.4.0"

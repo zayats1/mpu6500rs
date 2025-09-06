@@ -7,13 +7,15 @@ use embedded_hal::delay;
 use embedded_hal::i2c;
 use nalgebra::Vector3;
 
-
 use crate::mpu6500::config;
 use crate::mpu6500::config::Config;
 use crate::mpu6500::register::Register;
+use crate::mpu6500::units::temperature_from_bytes;
+use crate::mpu6500::units::val_from_bytes;
 
 use super::mpu6500_sys::accel_cfg;
 use super::mpu6500_sys::accel_cfg_2;
+use super::mpu6500_sys::configure;
 use super::mpu6500_sys::enable_interrupt;
 use super::mpu6500_sys::fifo_count_h;
 use super::mpu6500_sys::fifo_enable;
@@ -27,14 +29,9 @@ use super::mpu6500_sys::read_accel_offset;
 use super::mpu6500_sys::read_register;
 use super::mpu6500_sys::sample_rate_div;
 use super::mpu6500_sys::user_ctrl;
-use super::mpu6500_sys::configure;
 use super::mpu6500_sys::who_am_i;
 use super::mpu6500_sys::write_accel_offset;
 use super::mpu6500_sys::write_gyro_offset;
-
-
-
-
 
 pub const I2C_ADDR_AL: u8 = 0x68;
 pub const I2C_ADDR_AH: u8 = 0x69;
@@ -46,29 +43,31 @@ pub const DEV_ID_MPU9255: u8 = 0x73;
 // const CALIB_GYRO_SENSITIVITY: u16 = 131; // LSB/deg/s
 const CALIB_ACCEL_SENSITIVITY: u16 = 16384; // LSB/g
 
-const DEG_TO_RAD: f32 = 0.01745329252;
 
-#[derive(Debug,defmt::Format)]
-pub enum  Mpu6500Err<I2C> where
-    I2C: i2c::I2c,{
-     I2cErr(<I2C as embedded_hal::i2c::ErrorType>::Error),
-     InvalidDevice(u8),
-
+#[derive(Debug, defmt::Format)]
+pub enum Mpu6500Err<I2C>
+where
+    I2C: i2c::I2c,
+{
+    I2cErr(<I2C as embedded_hal::i2c::ErrorType>::Error),
+    InvalidDevice(u8),
 }
 
-impl <I2C> fmt::Display for  Mpu6500Err<I2C> where
-    I2C: i2c::I2c,{
+impl<I2C> fmt::Display for Mpu6500Err<I2C>
+where
+    I2C: i2c::I2c,
+{
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        
         match self {
-            Mpu6500Err::I2cErr(e) => write!(f, "I2C error: {:?}",e),
-            Mpu6500Err::InvalidDevice(dev_id) => write!(f, "The device is not a MPU6500: {}",dev_id) ,
+            Mpu6500Err::I2cErr(e) => write!(f, "I2C error: {:?}", e),
+            Mpu6500Err::InvalidDevice(dev_id) => {
+                write!(f, "The device is not a MPU6500: {}", dev_id)
+            }
         }
     }
 }
 
-impl  <I2C> Error for Mpu6500Err<I2C> where
-    I2C: i2c::I2c + core::fmt::Debug,{}
+impl<I2C> Error for Mpu6500Err<I2C> where I2C: i2c::I2c + core::fmt::Debug {}
 
 pub struct Mpu6500<I2C>
 where
@@ -102,7 +101,7 @@ where
         i2c: &mut I2C,
         delay: &mut DELAY,
         cfg: Config,
-    ) -> Result<Self,Mpu6500Err<I2C>>
+    ) -> Result<Self, Mpu6500Err<I2C>>
     where
         DELAY: delay::DelayNs,
     {
@@ -130,7 +129,11 @@ where
         Ok(mpu)
     }
 
-    fn init<DELAY>(&mut self, i2c: &mut I2C, delay: &mut DELAY) -> Result<(),<I2C as embedded_hal::i2c::ErrorType>::Error>
+    fn init<DELAY>(
+        &mut self,
+        i2c: &mut I2C,
+        delay: &mut DELAY,
+    ) -> Result<(), <I2C as embedded_hal::i2c::ErrorType>::Error>
     where
         DELAY: delay::DelayNs,
     {
@@ -161,34 +164,45 @@ where
         Ok(())
     }
 
-    pub(crate) fn read_imu(&mut self, i2c: &mut I2C) -> Result<(), <I2C as embedded_hal::i2c::ErrorType>::Error> {
+    pub(crate) fn read_imu(
+        &mut self,
+        i2c: &mut I2C,
+    ) -> Result<(), <I2C as embedded_hal::i2c::ErrorType>::Error> {
         let mut buf = [0; 14];
         read_register(self.addr, i2c, Register::ACCEL_XOUT_H, &mut buf)?;
 
+
         self.acceleration = Vector3::new(
-            i16::from_be_bytes([buf[0], buf[1]]) as f32 * self.accel_resolution,
-            i16::from_be_bytes([buf[2], buf[3]]) as f32 * self.accel_resolution,
-            i16::from_be_bytes([buf[4], buf[5]]) as f32 * self.accel_resolution,
+            val_from_bytes([buf[0], buf[1]], self.accel_resolution),
+            val_from_bytes([buf[2], buf[3]], self.accel_resolution),
+            val_from_bytes([buf[4], buf[5]], self.accel_resolution),
         );
 
-        self.temperature = i16::from_be_bytes([buf[6], buf[7]]) as f32 / 333.87 + 21.0;
+        self.temperature = temperature_from_bytes([buf[6], buf[7]]);
 
         self.angular_velocity = Vector3::new(
-            i16::from_be_bytes([buf[8], buf[9]]) as f32 * self.gyro_resolution * DEG_TO_RAD,
-            i16::from_be_bytes([buf[10], buf[11]]) as f32 * self.gyro_resolution * DEG_TO_RAD,
-            i16::from_be_bytes([buf[12], buf[13]]) as f32 * self.gyro_resolution * DEG_TO_RAD,
+            val_from_bytes([buf[8], buf[9]], self.gyro_resolution),
+            val_from_bytes([buf[10], buf[11]], self.gyro_resolution),
+            val_from_bytes([buf[12], buf[13]], self.gyro_resolution),
         );
 
         Ok(())
     }
 
-    pub fn read(&mut self, i2c: &mut I2C) -> Result<(), <I2C as embedded_hal::i2c::ErrorType>::Error> {
+    pub fn read(
+        &mut self,
+        i2c: &mut I2C,
+    ) -> Result<(), <I2C as embedded_hal::i2c::ErrorType>::Error> {
         self.read_imu(i2c)?;
 
         Ok(())
     }
     /// the function either shuts down the gyro or makes it inacurate
-    pub fn calibrate<DELAY>(&mut self, i2c: &mut I2C, delay: &mut DELAY) -> Result<(), <I2C as embedded_hal::i2c::ErrorType>::Error>
+    pub fn calibrate<DELAY>(
+        &mut self,
+        i2c: &mut I2C,
+        delay: &mut DELAY,
+    ) -> Result<(), <I2C as embedded_hal::i2c::ErrorType>::Error>
     where
         DELAY: delay::DelayNs,
     {
@@ -315,7 +329,6 @@ where
     pub fn angular_velocity(&self) -> Vector3<f32> {
         self.angular_velocity
     }
-
 
     pub fn temperature(&self) -> f32 {
         self.temperature

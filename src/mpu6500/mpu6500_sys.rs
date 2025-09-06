@@ -1,6 +1,4 @@
 
-
-
 use embedded_hal::i2c;
 use nalgebra::Vector3;
 
