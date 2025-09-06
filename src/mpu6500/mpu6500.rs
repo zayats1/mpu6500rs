@@ -10,7 +10,6 @@ use nalgebra::Vector3;
 
 use crate::mpu6500::config;
 use crate::mpu6500::config::Config;
-use crate::mpu6500::register;
 use crate::mpu6500::register::Register;
 
 use super::mpu6500_sys::accel_cfg;
