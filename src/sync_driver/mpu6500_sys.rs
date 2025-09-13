@@ -2,8 +2,8 @@
 use embedded_hal::i2c;
 use nalgebra::Vector3;
 
-use crate::mpu6500::config;
-use crate::mpu6500::register::Register;
+use crate::sync_driver::config;
+use crate::sync_driver::register::Register;
 
 /// Registers 19 to 24 – Gyro Offset Registers
 pub (crate)fn write_gyro_offset<I2C: i2c::I2c>(

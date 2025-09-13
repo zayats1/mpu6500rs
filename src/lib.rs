@@ -1,6 +1,6 @@
 #![no_std]
+pub mod units;
+pub mod sync_driver;
 
-pub mod mpu6500;
 
-pub use mpu6500::sensor;
 
