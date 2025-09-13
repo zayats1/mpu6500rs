@@ -7,13 +7,14 @@ use embedded_hal::delay;
 use embedded_hal::i2c;
 use nalgebra::Vector3;
 
-use crate::sync_driver::config;
-use crate::sync_driver::config::Config;
-use crate::sync_driver::register::Register;
+use crate::config;
+
+use crate::config::Config;
+use crate::register::Register;
 use crate::units::temperature_from_bytes;
 use crate::units::val_from_bytes;
 
-use super::mpu6500_sys::accel_cfg;
+use crate::sync_driver::mpu6500_sys::accel_cfg;
 use super::mpu6500_sys::accel_cfg_2;
 use super::mpu6500_sys::configure;
 use super::mpu6500_sys::enable_interrupt;

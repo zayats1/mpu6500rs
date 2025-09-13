@@ -1,5 +1,3 @@
-pub mod sensor;
-pub mod config;
 
-mod register;
-mod mpu6500_sys;
+pub(crate) mod mpu6500_sys;
+pub  mod sensor;

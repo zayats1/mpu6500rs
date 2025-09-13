@@ -15,7 +15,7 @@ pub const fn deg_to_rad(deg: f32) -> f32 {
 #[cfg(test)]
 mod unit_tests {
     extern crate std;
-    use crate::sync_driver::config::GyroFullScaleSelect;
+    use crate::config::GyroFullScaleSelect;
 
     use super::*;
     const TOLLERANCE: f32 = 1e-5;
