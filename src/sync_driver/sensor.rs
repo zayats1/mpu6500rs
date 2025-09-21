@@ -7,6 +7,7 @@ use embedded_hal::delay;
 use embedded_hal::i2c;
 use nalgebra::Vector3;
 
+use crate::IMUmeasruments;
 use crate::config;
 
 use crate::config::Config;
@@ -75,9 +76,6 @@ where
 {
     addr: u8,
     cfg: Config,
-    pub(crate) acceleration: Vector3<f32>,
-    pub(crate) angular_velocity: Vector3<f32>,
-    pub(crate) temperature: f32,
     accel_bias: Vector3<f32>,
     gyro_bias: Vector3<f32>,
     accel_resolution: f32,
@@ -113,9 +111,6 @@ where
 
         let mut mpu = Self {
             addr,
-            acceleration: Vector3::default(),
-            angular_velocity: Vector3::default(),
-            temperature: 0.0,
             accel_bias: Vector3::default(),
             gyro_bias: Vector3::default(),
             accel_resolution: cfg.accel_fs_sel.get_resolution(),
@@ -168,25 +163,25 @@ where
     pub fn read(
         &mut self,
         i2c: &mut I2C,
-    ) -> Result<(), <I2C as embedded_hal::i2c::ErrorType>::Error> {
+    ) -> Result<IMUmeasruments, <I2C as embedded_hal::i2c::ErrorType>::Error> {
         let mut buf = [0; 14];
         read_register(self.addr, i2c, Register::ACCEL_XOUT_H, &mut buf)?;
 
-        self.acceleration = Vector3::new(
+        let acceleration = Vector3::new(
             val_from_bytes([buf[0], buf[1]], self.accel_resolution),
             val_from_bytes([buf[2], buf[3]], self.accel_resolution),
             val_from_bytes([buf[4], buf[5]], self.accel_resolution),
         );
 
-        self.temperature = temperature_from_bytes([buf[6], buf[7]]);
+        let temperature = temperature_from_bytes([buf[6], buf[7]]);
 
-        self.angular_velocity = Vector3::new(
+        let angular_velocity = Vector3::new(
             val_from_bytes([buf[8], buf[9]], self.gyro_resolution),
             val_from_bytes([buf[10], buf[11]], self.gyro_resolution),
             val_from_bytes([buf[12], buf[13]], self.gyro_resolution),
         );
 
-        Ok(())
+        Ok(IMUmeasruments { acceleration, angular_velocity, temperature })
     }
     /// the function either shuts down the gyro or makes it inacurate
     pub fn calibrate<DELAY>(
@@ -313,15 +308,5 @@ where
         Ok(())
     }
 
-    pub fn acceleration(&self) -> Vector3<f32> {
-        self.acceleration
-    }
-
-    pub fn angular_velocity(&self) -> Vector3<f32> {
-        self.angular_velocity
-    }
-
-    pub fn temperature(&self) -> f32 {
-        self.temperature
-    }
+ 
 }
