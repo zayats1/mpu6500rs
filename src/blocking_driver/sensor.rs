@@ -33,7 +33,7 @@ use super::mpu6500_sys::user_ctrl;
 use super::mpu6500_sys::who_am_i;
 use super::mpu6500_sys::write_accel_offset;
 use super::mpu6500_sys::write_gyro_offset;
-use crate::sync_driver::mpu6500_sys::accel_cfg;
+use crate::blocking_driver::mpu6500_sys::accel_cfg;
 
 pub const I2C_ADDR_AL: u8 = 0x68;
 pub const I2C_ADDR_AH: u8 = 0x69;

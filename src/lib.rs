@@ -1,10 +1,8 @@
 #![no_std]
 
-
-
 use nalgebra::Vector3;
 pub mod config;
-pub mod sync_driver;
+pub mod blocking_driver;
 pub mod units;
 
 pub(crate) mod register;
