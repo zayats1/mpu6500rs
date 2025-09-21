@@ -14,7 +14,6 @@ use crate::register::Register;
 use crate::units::temperature_from_bytes;
 use crate::units::val_from_bytes;
 
-use crate::sync_driver::mpu6500_sys::accel_cfg;
 use super::mpu6500_sys::accel_cfg_2;
 use super::mpu6500_sys::configure;
 use super::mpu6500_sys::enable_interrupt;
@@ -33,6 +32,7 @@ use super::mpu6500_sys::user_ctrl;
 use super::mpu6500_sys::who_am_i;
 use super::mpu6500_sys::write_accel_offset;
 use super::mpu6500_sys::write_gyro_offset;
+use crate::sync_driver::mpu6500_sys::accel_cfg;
 
 pub const I2C_ADDR_AL: u8 = 0x68;
 pub const I2C_ADDR_AH: u8 = 0x69;
@@ -43,7 +43,6 @@ pub const DEV_ID_MPU9255: u8 = 0x73;
 
 // const CALIB_GYRO_SENSITIVITY: u16 = 131; // LSB/deg/s
 const CALIB_ACCEL_SENSITIVITY: u16 = 16384; // LSB/g
-
 
 #[derive(Debug, defmt::Format)]
 pub enum Mpu6500Err<I2C>
@@ -165,13 +164,13 @@ where
         Ok(())
     }
 
-    pub(crate) fn read_imu(
+     /// reads data from the IMU
+    pub fn read(
         &mut self,
         i2c: &mut I2C,
     ) -> Result<(), <I2C as embedded_hal::i2c::ErrorType>::Error> {
         let mut buf = [0; 14];
         read_register(self.addr, i2c, Register::ACCEL_XOUT_H, &mut buf)?;
-
 
         self.acceleration = Vector3::new(
             val_from_bytes([buf[0], buf[1]], self.accel_resolution),
@@ -186,15 +185,6 @@ where
             val_from_bytes([buf[10], buf[11]], self.gyro_resolution),
             val_from_bytes([buf[12], buf[13]], self.gyro_resolution),
         );
-
-        Ok(())
-    }
-
-    pub fn read(
-        &mut self,
-        i2c: &mut I2C,
-    ) -> Result<(), <I2C as embedded_hal::i2c::ErrorType>::Error> {
-        self.read_imu(i2c)?;
 
         Ok(())
     }

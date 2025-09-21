@@ -1,13 +1,14 @@
 use core::f32;
 
+/// parses some value from be bytes : like acceleration and angular velocity
 pub const fn val_from_bytes(bytes: [u8; 2], resolution: f32) -> f32 {
     i16::from_be_bytes(bytes) as f32 * resolution
 }
-
+/// converts be bytes to degreess of  C  1e-2 precision
 pub fn temperature_from_bytes(bytes: [u8; 2]) -> f32 {
     i16::from_be_bytes(bytes) as f32 / 333.87 + 21.0
 }
-
+/// the default output of the IMU is deg/s, but it is easy to convert the value to rad/s
 pub const fn deg_to_rad(deg: f32) -> f32 {
     deg * f32::consts::PI / 180.0
 }
