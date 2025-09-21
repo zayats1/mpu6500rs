@@ -1,6 +1,6 @@
 [package]
 name = "mpu6500rs"
-version = "0.4.1"
+version = "0.4.2"
 authors = ["zayats1"]
 edition = "2024"
 license = "MIT OR Apache-2.0"
@@ -20,7 +20,7 @@ keywords = ["mpu6500","accelerometer","gyroscope","gyro"]
 defmt = "1.0.1"
 embedded-hal = "1.0.0"
 
-nalgebra = {version = "0.34.0",  default-features = false,features = ["libm"]}
+nalgebra = {version = "0.34.1",  default-features = false,features = ["libm"]}
 nb = "1.1.0"
 
 
