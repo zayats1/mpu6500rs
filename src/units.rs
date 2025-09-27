@@ -1,5 +1,8 @@
 use core::f32;
 
+const G_UNIT:f32 = 9.80665;
+
+
 /// parses some value from be bytes : like acceleration and angular velocity
 pub const fn val_from_bytes(bytes: [u8; 2], resolution: f32) -> f32 {
     i16::from_be_bytes(bytes) as f32 * resolution
@@ -13,6 +16,13 @@ pub const fn deg_to_rad(deg: f32) -> f32 {
     deg * f32::consts::PI / 180.0
 }
 
+// 
+pub const fn  g_to_m_s2(acc_g: f32) -> f32 {
+   acc_g*G_UNIT
+}
+
+
+
 #[cfg(test)]
 mod unit_tests {
     extern crate std;
@@ -24,6 +34,14 @@ mod unit_tests {
     fn assert_almost_eq(original: f32, expected: f32, tollerance: f32) {
         let diff = (original - expected).abs();
         assert!(diff <= tollerance)
+    }
+
+    #[test]
+    fn g_to_m_s2_test(){
+         let g = 1.0;
+         let expected = G_UNIT;
+         let diff = (g_to_m_s2(g) - expected).abs();
+         assert!(diff <= TOLLERANCE)
     }
 
     #[test]
