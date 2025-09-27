@@ -16,7 +16,7 @@ pub const fn deg_to_rad(deg: f32) -> f32 {
     deg * f32::consts::PI / 180.0
 }
 
-// 
+// converts g unit to m/s^2
 pub const fn  g_to_m_s2(acc_g: f32) -> f32 {
    acc_g*G_UNIT
 }
