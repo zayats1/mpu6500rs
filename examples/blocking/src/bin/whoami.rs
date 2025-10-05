@@ -9,7 +9,7 @@ use embassy_time::{Delay};
 
 
 use mpu6500rs::blocking_driver::sensor::Mpu6500;
-use mpu6500test as _;
+use blocking as _;
 
 const ADDRESS: u8 = 0b1101000;
 

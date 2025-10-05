@@ -11,9 +11,8 @@ use libm::round;
 
 use mpu6500rs::blocking_driver::sensor::Mpu6500;
 
-
+use blocking as _;
 const ADDRESS: u8 = 0b1101000;
-const WHOAMI: u8 = 0x75;
 
 #[embassy_executor::main]
 async fn main(_spawner: Spawner) {

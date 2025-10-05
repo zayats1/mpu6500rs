@@ -13,7 +13,7 @@ use mpu6500rs::{
     blocking_driver::sensor::Mpu6500,
     config::{self, Config},
 };
-use mpu6500test as _;
+use blocking as _;
 
 const ADDRESS: u8 = 0b1101000;
 const WHOAMI: u8 = 0x75;

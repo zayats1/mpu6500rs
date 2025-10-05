@@ -1,7 +1,7 @@
 [package]
 # TODO(1) fix `authors` and `name` if you didn't use `cargo-generate`
 authors = ["zayats1 <zaiats.bogdan@gmail.com>"]
-name = "mpu6500test"
+name = "blocking"
 edition = "2024"
 version = "0.1.0"
 
