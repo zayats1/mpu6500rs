@@ -9,12 +9,12 @@
 Please submit an issue or a pull request for a sensor that you want to use, but is not listed in here.
 
 # Roadmap
-1. test common functional with embedded test 
-2. refactor code to system and user parts
-3. add examples
-4. add documentation
-5. add an async support
-6. publish crate to crates.io
+- [ ] test common functional with embedded test   
+- [x]  refactor code to system and user parts  
+- [x] add examples  
+- [x] add documentation  
+- [ ] add an async support  
+- [ ] publish crate to crates.io  
 
 
 ## License
