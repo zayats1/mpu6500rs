@@ -6,7 +6,6 @@
 | Feature       | Sensors           |  
 | mpu6500       | MPU6500 |  
 
-Please submit an issue or a pull request for a sensor that you want to use, but is not listed in here.
 
 # Roadmap
 - [ ] test common functional with embedded test   
