@@ -1,2 +1,4 @@
 /target
 Cargo.lock
+examples/mpu6500test/target
+examples/mpu6500test/Cargo.lock
