@@ -308,5 +308,8 @@ where
         Ok(())
     }
 
+    pub fn whoami(&self,i2c: &mut I2C) -> Result<u8, <I2C as embedded_hal::i2c::ErrorType>::Error>{
+        who_am_i(self.addr, i2c)
+    }
  
 }
