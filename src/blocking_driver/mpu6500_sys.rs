@@ -46,7 +46,7 @@ pub (crate)fn configure<I2C: i2c::I2c>(
         addr,
         i2c,
         Register::CFG,
-        (fifo_mode as u8) << 6 | (dlpf_cfg as u8) << 0,
+        (fifo_mode as u8) << 6 | ((dlpf_cfg as u8)),
     )
 }
 
@@ -64,7 +64,7 @@ pub (crate)fn gyro_cfg<I2C: i2c::I2c>(
         addr,
         i2c,
         Register::GYRO_CFG,
-        c[0] & 0b11100111 | (gyro_fs_sel as u8) << 3 | (fchoice_b & 0b11) << 0,
+        c[0] & 0b11100111 | (gyro_fs_sel as u8) << 3 | ((fchoice_b & 0b11)),
     )
 }
 
@@ -99,7 +99,7 @@ pub (crate)fn accel_cfg_2<I2C: i2c::I2c>(
         addr,
         i2c,
         Register::ACCEL_CFG_2,
-        c[0] & 0b11110000 | (accel_fchoice_b as u8) << 3 | (a_dlpf_cfg as u8) << 0,
+        c[0] & 0b11110000 | (accel_fchoice_b as u8) << 3 | ((a_dlpf_cfg as u8)),
     )
 }
 
@@ -127,7 +127,7 @@ pub (crate)fn fifo_enable<I2C: i2c::I2c>(
             | (accel as u8) << 3
             | (slv_2 as u8) << 2
             | (slv_1 as u8) << 1
-            | (slv_0 as u8) << 0,
+            | ((slv_0 as u8)),
     )
 }
 
@@ -149,7 +149,7 @@ pub (crate)fn i2c_mst_ctrl<I2C: i2c::I2c>(
             | (wait_for_es as u8) << 6
             | (slv_3_fifo_en as u8) << 5
             | (i2c_mst_p_nsr as u8) << 4
-            | (i2c_mst_clk & 0b1111) << 0,
+            | ((i2c_mst_clk & 0b1111)),
     )
 }
 
@@ -195,7 +195,7 @@ pub (crate)fn enable_interrupt<I2C: i2c::I2c>(
         (wom_en as u8) << 6
             | (fifo_overflow_en as u8) << 4
             | (fsync_int_en as u8) << 3
-            | (raw_rdy_en as u8) << 0,
+            | ((raw_rdy_en as u8)),
     )
 }
 
@@ -219,7 +219,7 @@ pub (crate)fn user_ctrl<I2C: i2c::I2c>(
             | (i2c_if_dis as u8) << 4
             | (fifo_rst as u8) << 2
             | (i2c_mst_rst as u8) << 1
-            | (sig_cond_rst as u8) << 0,
+            | ((sig_cond_rst as u8)),
     )
 }
 
@@ -243,7 +243,7 @@ pub (crate)fn pwr_mgmt_1<I2C: i2c::I2c>(
             | (cycle as u8) << 5
             | (gyro_standby as u8) << 4
             | (pd_ptat as u8) << 3
-            | (clksel & 0b111) << 0,
+            | ((clksel & 0b111)),
     )
 }
 
@@ -267,7 +267,7 @@ pub (crate)fn pwr_mgmt_2<I2C: i2c::I2c>(
             | (disable_za as u8) << 3
             | (disable_xg as u8) << 2
             | (disable_yg as u8) << 1
-            | (disable_zg as u8) << 0,
+            | ((disable_zg as u8)),
     )
 }
 

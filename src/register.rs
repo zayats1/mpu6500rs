@@ -1,4 +1,5 @@
 #[allow(dead_code, non_camel_case_types)]
+#[allow(clippy::upper_case_acronyms)]
 #[derive(Debug, Clone, Copy)]
 pub enum Register {
     SELF_TEST_X_GYRO = 0x00,
