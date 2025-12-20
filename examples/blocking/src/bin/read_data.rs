@@ -32,9 +32,9 @@ async fn main(_spawner: Spawner) {
         }
     };
     loop {
-        let measurments = mpu6500.read(&mut i2c);
-        debug!("Measurments {:?}", measurments);
-        if let Ok(val) = measurments {
+        let measurements = mpu6500.read(&mut i2c);
+        debug!("Measurements {:?}", measurements);
+        if let Ok(val) = measurements {
             let acc = val.acceleration();
             let vec: Vec<f32, 3> = round_vec3(&acc);
 
@@ -47,6 +47,6 @@ async fn main(_spawner: Spawner) {
             let temp = val.temperature();
             debug!("temp {}", temp);
             Timer::after_millis(250).await;
-        }
+        } else {  }
     }
 }

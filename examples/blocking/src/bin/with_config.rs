@@ -43,9 +43,9 @@ async fn main(_spawner: Spawner) {
         Config::default()
             .accel_fs_sel(config::AccelFullScaleSelect::G16)
             .gyro_fs_sel(config::GyroFullScaleSelect::Dps250)
-            .accel_dlpf_cfg(mpu6500rs::config::AccelDlpfCfg::Dlpf21Hz)
-            .gyro_dlpf_cfg(mpu6500rs::config::GyroDlpfCfg::Dlpf5Hz)
-            .fifo_sample_rate(mpu6500rs::config::FifoSampleRate::Smpl500Hz),
+            .accel_dlpf_cfg(config::AccelDlpfCfg::Dlpf21Hz)
+            .gyro_dlpf_cfg(config::GyroDlpfCfg::Dlpf5Hz)
+            .fifo_sample_rate(config::FifoSampleRate::Smpl500Hz),
     );
     let mut mpu6500 = match mpu6500 {
         Ok(device) => device,
@@ -58,11 +58,11 @@ async fn main(_spawner: Spawner) {
 
     loop {
         let val = mpu6500.read(&mut i2c);
-        debug!("Measurments {:?}", val);
+        debug!("Measurements {:?}", val);
 
         loop {
             let measurements = mpu6500.read(&mut i2c);
-            debug!("Measurments {:?}", measurements);
+            debug!("Measurements {:?}", measurements);
             if let Ok(val) = measurements {
                 let acc = val.acceleration();
                 let vec: Vec<f32, 3> =  round_vec3(&acc);
