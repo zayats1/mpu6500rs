@@ -4,7 +4,7 @@ version = "0.5.1"
 authors = ["zayats1"]
 edition = "2024"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/niiyachiru/embedded-sensors"
+repository = "https://github.com/zayats1/mpu6500rs"
 description = "an accelerometer and a gyroscope access crate."
 keywords = ["mpu6500","accelerometer","gyroscope","gyro","imu"]
 
