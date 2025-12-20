@@ -38,7 +38,7 @@ async fn main(_spawner: Spawner) {
         if let Ok(val) = measurments {
             let acc = val.acceleration();
             let vec: Vec<f32, 3> = round_vec3(&acc);
-                .
+                
             debug!("acc {:?}", vec.as_slice());
 
             let vel = val.angular_velocity();
