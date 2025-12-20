@@ -12,6 +12,8 @@ use libm::round;
 use mpu6500rs::blocking_driver::sensor::Mpu6500;
 
 use blocking as _;
+use blocking::round_vec3;
+
 const ADDRESS: u8 = 0b1101000;
 
 #[embassy_executor::main]
@@ -35,17 +37,13 @@ async fn main(_spawner: Spawner) {
         debug!("Measurments {:?}", measurments);
         if let Ok(val) = measurments {
             let acc = val.acceleration();
-            let vec: Vec<f32, 3> = acc
-                .iter()
-                .map(|num| round((num * 100.0).into()) as f32 / 100.0)
-                .collect();
+            let vec: Vec<f32, 3> = round_vec3(&acc);
+                .
             debug!("acc {:?}", vec.as_slice());
 
             let vel = val.angular_velocity();
-            let vec: Vec<f32, 3> = vel
-                .iter()
-                .map(|num| round((num * 100.0).into()) as f32 / 100.0)
-                .collect();
+            let vec: Vec<f32, 3> = round_vec3(&vel);
+                
             debug!("vel {:?}", vec.as_slice());
             let temp = val.temperature();
             debug!("temp {}", temp);

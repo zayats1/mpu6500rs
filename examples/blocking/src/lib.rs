@@ -1,7 +1,12 @@
 #![no_main]
 #![no_std]
 
-use defmt_rtt as _; // global logger
+
+use defmt_rtt as _;
+use heapless::Vec;
+use libm::round;
+use nalgebra::Vector3;
+// global logger
 
 // TODO(5) adjust HAL import
 // use some_hal as _; // memory layout
@@ -34,6 +39,17 @@ unsafe fn HardFault(_frame: &cortex_m_rt::ExceptionFrame) -> ! {
 // defmt-test 0.3.0 has the limitation that this `#[tests]` attribute can only be used
 // once within a crate. the module can be in any file but there can only be at most
 // one `#[tests]` module in this library crate
+
+
+pub fn round_vec3(val: &Vector3<f32>) -> Vec<f32, 3> {
+    val
+        .iter()
+        .map(|num| round((num * 100.0).into()) as f32 / 100.0)
+        .collect()
+}
+
+
+
 #[cfg(test)]
 #[defmt_test::tests]
 mod unit_tests {

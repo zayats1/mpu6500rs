@@ -5,16 +5,11 @@ name = "blocking"
 edition = "2024"
 version = "0.1.0"
 
-
 [dependencies]
-semihosting = "0.1.20"
+semihosting = "0.1.21"
 cortex-m = { version = "0.7.7", features = ["critical-section-single-core"] }
 cortex-m-rt = "0.7.5"
-embedded-hal = { version = "1.0.0" }
 
-num-traits = { version = "0.2.19", default-features = false, features = [
-    "libm",
-] }
 panic-probe = { version = "1.0.0", features = ["print-defmt"] }
 embassy-stm32 = { version = "0.4.0", features = [
     "stm32l476rg",
@@ -35,20 +30,18 @@ embassy-executor = { version = "0.9.1", features = [
     "executor-interrupt",
     "defmt",
 ] }
-embassy-embedded-hal = { version = "0.5.0", features = ["defmt"] }
-embassy-futures = { version = "0.1.2", features = ["defmt"] }
-embassy-sync = { version = "0.7.2", features = ["defmt"] }
+
 libm = "0.2.15"
-embedded-hal-async = "1.0.0"
-hcsr04_async = "0.4.0"
+
 heapless = "0.9.2"
-mpu6500rs = {path="../../"}
-nalgebra-glm = {version = "0.20.0", default-features = false}
-# TODO(4) enter your HAL here
-# some-hal = "1.2.3"
+mpu6500rs = { path = "../../" }
+nalgebra = { version = "0.34.1", default-features = false, features = ["libm"] }
 
 [dev-dependencies]
 defmt-test = "0.4.0"
+
+[lib]
+
 
 # cargo build/run
 [profile.dev]

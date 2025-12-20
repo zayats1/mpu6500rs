@@ -8,12 +8,14 @@ use embassy_stm32::i2c::I2c;
 use embassy_time::{Delay, Timer};
 use heapless::Vec;
 use libm::round;
-
+use nalgebra::Vector3;
 use mpu6500rs::{
     blocking_driver::sensor::Mpu6500,
     config::{self, Config},
 };
 use blocking as _;
+use blocking::round_vec3;
+
 
 const ADDRESS: u8 = 0b1101000;
 const WHOAMI: u8 = 0x75;
@@ -59,21 +61,15 @@ async fn main(_spawner: Spawner) {
         debug!("Measurments {:?}", val);
 
         loop {
-            let measurments = mpu6500.read(&mut i2c);
-            debug!("Measurments {:?}", measurments);
-            if let Ok(val) = measurments {
+            let measurements = mpu6500.read(&mut i2c);
+            debug!("Measurments {:?}", measurements);
+            if let Ok(val) = measurements {
                 let acc = val.acceleration();
-                let vec: Vec<f32, 3> = acc
-                    .iter()
-                    .map(|num| round((num * 100.0).into()) as f32 / 100.0)
-                    .collect();
+                let vec: Vec<f32, 3> =  round_vec3(&acc);
                 debug!("acc {:?}", vec.as_slice());
 
                 let vel = val.angular_velocity();
-                let vec: Vec<f32, 3> = vel
-                    .iter()
-                    .map(|num| round((num * 100.0).into()) as f32 / 100.0)
-                    .collect();
+                let vec: Vec<f32, 3> = round_vec3(&vel);
                 debug!("vel {:?}", vec.as_slice());
                 let temp = val.temperature();
                 debug!("temp {}", temp);
@@ -82,3 +78,4 @@ async fn main(_spawner: Spawner) {
         }
     }
 }
+
