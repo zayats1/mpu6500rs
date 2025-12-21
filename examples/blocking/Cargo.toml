@@ -5,6 +5,35 @@ name = "blocking"
 edition = "2024"
 version = "0.1.0"
 
+
+[[bin]]
+name = "read_data"
+test = false
+doctest = false
+bench = false
+
+[[bin]]
+name = "whoami"
+test = false
+doctest = false
+bench = false
+
+[[bin]]
+name = "with_config"
+test = false
+doctest = false
+bench = false
+
+
+[lib]
+
+harness = false
+test = false
+doctest = false
+bench = false
+
+
+
 [dependencies]
 semihosting = "0.1.21"
 cortex-m = { version = "0.7.7", features = ["critical-section-single-core"] }
@@ -34,15 +63,13 @@ embassy-executor = { version = "0.9.1", features = [
 libm = "0.2.15"
 
 heapless = "0.9.2"
-mpu6500rs = { path = "" }
+mpu6500rs = { path = "../../" }
 nalgebra = { version = "0.34.1", default-features = false, features = ["libm"] }
 
 [dev-dependencies]
 defmt-test = "0.4.0"
 
-[lib]
-harness = false
-target_os = "none"
+
 # cargo build/run
 [profile.dev]
 # default is opt-level = '0', but that makes very

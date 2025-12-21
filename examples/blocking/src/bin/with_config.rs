@@ -7,15 +7,13 @@ use embassy_stm32::i2c::I2c;
 
 use embassy_time::{Delay, Timer};
 use heapless::Vec;
-use libm::round;
-use nalgebra::Vector3;
+
+use blocking as _;
+use blocking::round_vec3;
 use mpu6500rs::{
     blocking_driver::sensor::Mpu6500,
     config::{self, Config},
 };
-use blocking as _;
-use blocking::round_vec3;
-
 
 const ADDRESS: u8 = 0b1101000;
 const WHOAMI: u8 = 0x75;
@@ -65,7 +63,7 @@ async fn main(_spawner: Spawner) {
             debug!("Measurements {:?}", measurements);
             if let Ok(val) = measurements {
                 let acc = val.acceleration();
-                let vec: Vec<f32, 3> =  round_vec3(&acc);
+                let vec: Vec<f32, 3> = round_vec3(&acc);
                 debug!("acc {:?}", vec.as_slice());
 
                 let vel = val.angular_velocity();
@@ -78,4 +76,3 @@ async fn main(_spawner: Spawner) {
         }
     }
 }
-
