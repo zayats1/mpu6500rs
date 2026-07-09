@@ -18,8 +18,8 @@ keywords = ["mpu6500","accelerometer","gyroscope","gyro","imu"]
 [dependencies]
 defmt = "1.0.1"
 embedded-hal = "1.0.0"
-nalgebra = {version = "0.34.1",  default-features = false,features = ["libm"]}
+nalgebra = {version = "0.35.0",  default-features = false,features = ["libm"]}
 
 
 [dev-dependencies]
-defmt-test = "0.4.0"
+defmt-test = "0.5.0"
