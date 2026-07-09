@@ -9,8 +9,8 @@ use heapless::Vec;
 
 use mpu6500rs::blocking_driver::sensor::Mpu6500;
 
-use blocking as _;
-use blocking::round_vec3;
+use stm32l4_blocking as _;
+use stm32l4_blocking ::round_vec3;
 
 const ADDRESS: u8 = 0b1101000;
 

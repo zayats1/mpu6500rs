@@ -8,8 +8,8 @@ use embassy_stm32::i2c::I2c;
 use embassy_time::{Delay, Timer};
 use heapless::Vec;
 
-use blocking as _;
-use blocking::round_vec3;
+use stm32l4_blocking as _;
+use stm32l4_blocking::round_vec3;
 use mpu6500rs::{
     blocking_driver::sensor::Mpu6500,
     config::{self, Config},

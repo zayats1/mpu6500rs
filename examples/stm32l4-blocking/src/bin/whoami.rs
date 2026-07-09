@@ -7,7 +7,7 @@ use embassy_stm32::i2c::I2c;
 
 use embassy_time::Delay;
 
-use blocking as _;
+use stm32l4_blocking as _;
 use mpu6500rs::blocking_driver::sensor::Mpu6500;
 
 const ADDRESS: u8 = 0b1101000;
